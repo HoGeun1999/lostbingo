@@ -18,3 +18,4 @@ button = tkinter.Button(window, width=25, height=10, text="버튼", command=lamb
 button.pack(expand=True, anchor="center")
 
 window.mainloop()
+123
