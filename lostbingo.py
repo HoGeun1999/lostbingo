@@ -1,21 +1,16 @@
 import tkinter
 
 window=tkinter.Tk()
-window.title("YUN DAE HEE")
-window.geometry("640x400+100+100")
-window.resizable(True, True)
+window.title("lostbingo")
+window.geometry("1200x650+200+100")
 
-def command_args(argument1, argument2, argument3):
-    global arg1
-    arg1 = argument1 * 2
-    print(argument1, argument2, argument3)
+canvas = tkinter.Canvas(width=500,height=600,bg="white")
+canvas.pack()
+for y in range(5):
+    for x in range(5):
+        canvas.create_rectangle(x*100,y*100,x*100+100,y*100+100)
 
-arg1 = 1
-arg2 = "alpha"
-arg3 = "beta"
-
-button = tkinter.Button(window, width=25, height=10, text="버튼", command=lambda: command_args(arg1, arg2, arg3))
-button.pack(expand=True, anchor="center")
+button = tkinter.Button(window, overrelief="solid", width=10, text = '1,1')
+button.pack()
 
 window.mainloop()
-123
