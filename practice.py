@@ -28,7 +28,6 @@ for x in range(5):
 def find_index(x,y):
     for i in range(len(check_bnt)):
         if check_bnt[i][0] == x and check_bnt[i][1] == y:
-                print(i)
                 return i
 
 def drow_oval(x,y):
@@ -67,13 +66,11 @@ def drow_oval(x,y):
                 if x_bingo_count == 5:
                     if i not in x_bingo:
                         x_bingo.append(i)
-                        print(x_bingo)
                     for k in range(5):
                         canvas.create_oval(170-40*(i-1)+40*k,15+40*(i-1)+40*k,230-40*(i-1)+40*k,65+40*(i-1)+40*k,outline='red',width='2')
                 else:
                     pass
             return
-
         if x+1 in y_bingo:  
             drow_oval_left_up(x,y)
             drow_oval_right_up(x,y)
@@ -92,20 +89,14 @@ def drow_oval(x,y):
                 else:
                     pass
             return
-        if 1 in cross_bingo:
-            drow_oval_left_up(x,y)
-            drow_oval_right_up(x,y)
-            drow_oval_right_down(x,y)
-            drow_oval_left_down(x,y)
-            return
-        if 2 in cross_bingo:
+        if [x+1,y+1] in cross_bingo:
             drow_oval_left_up(x,y)
             drow_oval_right_up(x,y)
             drow_oval_right_down(x,y)
             drow_oval_left_down(x,y)
             return
 
-        if [x+1,y+1] in check_bnt:
+        if [x+1,y+1] in check_bnt :
             canvas.create_oval(170-40*y+40*x,15+40*y+40*x,230-40*y+40*x,65+40*y+40*x,outline='white',width='2')
             check_bnt.pop(find_index(x+1,y+1))
         else:
@@ -146,11 +137,20 @@ def drow_oval(x,y):
         if [1,1] in check_bnt and [2,2] in check_bnt and [3,3] in check_bnt and [4,4] in check_bnt and [5,5] in check_bnt:
             for i in range(5):
                 canvas.create_oval(170-40*i+40*i,15+40*i+40*i,230-40*i+40*i,65+40*i+40*i,outline='red',width='2')
-                cross_bingo.append(1)
+                cross_bingo.append([1,1])
+                cross_bingo.append([2,2])
+                cross_bingo.append([3,3])
+                cross_bingo.append([4,4])
+                cross_bingo.append([5,5])
         if [1,5] in check_bnt and [2,4] in check_bnt and [3,3] in check_bnt and [4,2] in check_bnt and [5,1] in check_bnt:
             for i in range(1,6):
                 canvas.create_oval(170-40*(i-1)+40*(5-i),15+40*(i-1)+40*(5-i),230-40*(i-1)+40*(5-i),65+40*(i-1)+40*(5-i),outline='red',width='2')
-                cross_bingo.append(2)
+                cross_bingo.append([1,5])
+                cross_bingo.append([2,4])
+                cross_bingo.append([3,3])
+                cross_bingo.append([4,2])
+                cross_bingo.append([5,1])
+                
             
                 
     return drow_oval_2
@@ -161,13 +161,7 @@ def drow_oval_left_up(x,y):
             return
         if x in y_bingo:
             return
-        if 1 in cross_bingo or 2 in cross_bingo:
-            if [x,y+1] in check_bnt:
-                canvas.create_oval(170-40*y+40*(x-1),15+40*y+40*(x-1),230-40*y+40*(x-1),65+40*y+40*(x-1),outline='white',width='2')
-                check_bnt.pop(find_index(x,y+1))
-            else:
-                canvas.create_oval(170-40*y+40*(x-1),15+40*y+40*(x-1),230-40*y+40*(x-1),65+40*y+40*(x-1),outline='blue',width='2')
-                check_bnt.append([x,y+1])
+        if [x,y+1] in cross_bingo:
             return
         if [x,y+1] in check_bnt:
             canvas.create_oval(170-40*y+40*(x-1),15+40*y+40*(x-1),230-40*y+40*(x-1),65+40*y+40*(x-1),outline='white',width='2')
@@ -184,7 +178,7 @@ def drow_oval_right_up(x,y):
             return
         if x+1 in y_bingo:
             return
-        if 1 in cross_bingo:
+        if [x+1,y] in cross_bingo:
             return
         if [x+1,y] in check_bnt:
             canvas.create_oval(170-40*(y-1)+40*x,15+40*(y-1)+40*x,230-40*(y-1)+40*x,65+40*(y-1)+40*x,outline='white',width='2')
@@ -201,7 +195,7 @@ def drow_oval_right_down(x,y):
             return
         if x+2 in y_bingo:
             return
-        if 1 in cross_bingo:
+        if [x+2,y+1] in cross_bingo:
             return
         if [x+2,y+1] in check_bnt:
             canvas.create_oval(170-40*y+40*(x+1),15+40*y+40*(x+1),230-40*y+40*(x+1),65+40*y+40*(x+1),outline='white',width='2')
@@ -216,7 +210,7 @@ def drow_oval_left_down(x,y):
             return
         if x+1 in y_bingo:
             return
-        if 1 in cross_bingo:
+        if [x+1,y+2] in cross_bingo:
             return
         if [x+1,y+2] in check_bnt:
             canvas.create_oval(170-40*(y+1)+40*x,15+40*(y+1)+40*x,230-40*(y+1)+40*x,65+40*(y+1)+40*x,outline='white',width='2')
