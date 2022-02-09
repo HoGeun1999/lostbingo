@@ -1,3 +1,4 @@
+from cgitb import reset
 from gettext import find
 from itertools import count
 import re
@@ -17,14 +18,45 @@ x_bingo_count = 0
 y_bingo_count = 0
 check_bnt = []
 cross_bingo = []
+log_bnt = []
 dic = {}
 count = 0
 points = [0,200,200,400,400,200,200,0]
 canvas.create_polygon(points,outline="black",fill="white",width=2)
+
+
 for x in range(5):
     for y in range(5):
         small_points = [160-40*y+40*x,40+40*y+40*x,200-40*y+40*x,80+40*y+40*x,240-40*y+40*x,40+40*y+40*x,200-40*y+40*x,0+40*y+40*x]
         canvas.create_polygon(small_points,outline="black",fill="white",width=2)
+
+def check_log():
+    print(log_bnt)
+
+def re_button():
+    global x_bingo_count
+    global y_bingo_count
+    global count
+    global x_bingo
+    global cross_bingo
+    global log_bnt
+    global y_bingo
+    global check_bnt
+    x_bingo_count = 0
+    y_bingo_count = 0
+    count = 0
+    log_bnt = []
+    x_bingo = []
+    y_bingo = []
+    cross_bingo = []
+    check_bnt = []
+    for x in range(5):
+        for y in range(5):
+            small_points = [160-40*y+40*x,40+40*y+40*x,200-40*y+40*x,80+40*y+40*x,240-40*y+40*x,40+40*y+40*x,200-40*y+40*x,0+40*y+40*x]
+            canvas.create_polygon(small_points,outline="black",fill="white",width=2)
+
+
+
 def find_index(x,y):
     for i in range(len(check_bnt)):
         if check_bnt[i][0] == x and check_bnt[i][1] == y:
@@ -37,6 +69,8 @@ def drow_oval(x,y):
         global count
         global x_bingo
         global cross_bingo
+        global log_bnt
+        global y_bingo
         x_bingo_count = 0
         y_bingo_count = 0
         if count < 2:
@@ -45,6 +79,7 @@ def drow_oval(x,y):
             count = count + 1
             canvas.create_oval(170-40*y+40*x,15+40*y+40*x,230-40*y+40*x,65+40*y+40*x,outline='blue',width='2')
             check_bnt.append([x+1,y+1])
+            log_bnt.append([x+1,y+1])
             if count == 2:
                 button1 = dic[(check_bnt[0][0]-1,check_bnt[0][1]-1)]
                 button1["state"] = 'normal'
@@ -52,7 +87,7 @@ def drow_oval(x,y):
                 button1["state"] = tkinter.NORMAL
             return
 
-
+        log_bnt.append([x+1,y+1])
         if y+1 in x_bingo: 
             drow_oval_left_up(x,y)
             drow_oval_right_up(x,y)
@@ -227,5 +262,10 @@ for x in range(5):
         dic[(x,y)] = button1
         button1_window = canvas.create_window(200-40*y+40*x,40+40*y+40*x,window=button1)
 
+log_button = tkinter.Button(window,command = check_log,width='10',height='2',text='log_button')
+log_button.pack()
+
+re_button = tkinter.Button(window,command = re_button,width='10',height='2',text='re_button')
+re_button.pack()
 
 window.mainloop()
