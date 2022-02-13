@@ -5,6 +5,7 @@ import re
 from sre_parse import State
 import tkinter
 from tkinter.constants import COMMAND
+from turtle import onclick
 from typing import Text
 window=tkinter.Tk()
 window.title("lostbingo")
@@ -33,7 +34,35 @@ for x in range(5):
 def check_log():
     print(log_bnt)
 
-def re_button():
+def Oneback_bnt():
+    global x_bingo_count
+    global y_bingo_count
+    global count
+    global x_bingo
+    global cross_bingo
+    global log_bnt
+    global y_bingo
+    global check_bnt
+    x_bingo_count = 0
+    y_bingo_count = 0
+    count = 0
+    x_bingo = []
+    y_bingo = []
+    cross_bingo = []
+    check_bnt = []
+    for x in range(5):
+        for y in range(5):
+            small_points = [160-40*y+40*x,40+40*y+40*x,200-40*y+40*x,80+40*y+40*x,240-40*y+40*x,40+40*y+40*x,200-40*y+40*x,0+40*y+40*x]
+            canvas.create_polygon(small_points,outline="black",fill="white",width=2)
+    log_bnt.pop()
+    for i in range(len(log_bnt)):
+        drow_oval(log_bnt[i][0]-1,log_bnt[i][1]-1,False)()
+    
+    if len(log_bnt) == 0:
+        re_bnt()
+
+        
+def re_bnt():
     global x_bingo_count
     global y_bingo_count
     global count
@@ -54,7 +83,11 @@ def re_button():
         for y in range(5):
             small_points = [160-40*y+40*x,40+40*y+40*x,200-40*y+40*x,80+40*y+40*x,240-40*y+40*x,40+40*y+40*x,200-40*y+40*x,0+40*y+40*x]
             canvas.create_polygon(small_points,outline="black",fill="white",width=2)
-
+    for x in range(5):
+        for y in range(5):
+            button1 = tkinter.Button(window,command = drow_oval(x,y,True),text = "%d,%d"%(x+1,y+1),width='3')
+            dic[(x,y)] = button1
+            button1_window = canvas.create_window(200-40*y+40*x,40+40*y+40*x,window=button1)
 
 
 def find_index(x,y):
@@ -62,7 +95,8 @@ def find_index(x,y):
         if check_bnt[i][0] == x and check_bnt[i][1] == y:
                 return i
 
-def drow_oval(x,y):
+
+def drow_oval(x,y,oneback_check):
     def drow_oval_2():
         global x_bingo_count
         global y_bingo_count
@@ -79,15 +113,16 @@ def drow_oval(x,y):
             count = count + 1
             canvas.create_oval(170-40*y+40*x,15+40*y+40*x,230-40*y+40*x,65+40*y+40*x,outline='blue',width='2')
             check_bnt.append([x+1,y+1])
-            log_bnt.append([x+1,y+1])
+            if oneback_check == True:
+                log_bnt.append([x+1,y+1])
             if count == 2:
                 button1 = dic[(check_bnt[0][0]-1,check_bnt[0][1]-1)]
                 button1["state"] = 'normal'
                 button1 = dic[(check_bnt[1][0]-1,check_bnt[1][1]-1)]
                 button1["state"] = tkinter.NORMAL
             return
-
-        log_bnt.append([x+1,y+1])
+        if oneback_check == True:
+            log_bnt.append([x+1,y+1])
         if y+1 in x_bingo: 
             drow_oval_left_up(x,y)
             drow_oval_right_up(x,y)
@@ -184,11 +219,9 @@ def drow_oval(x,y):
                 cross_bingo.append([2,4])
                 cross_bingo.append([3,3])
                 cross_bingo.append([4,2])
-                cross_bingo.append([5,1])
-                
-            
-                
+                cross_bingo.append([5,1])              
     return drow_oval_2
+
 
 def drow_oval_left_up(x,y):
     if x-1>=0: #좌상단 위치 3,3 > 2,3
@@ -254,18 +287,20 @@ def drow_oval_left_down(x,y):
             canvas.create_oval(170-40*(y+1)+40*x,15+40*(y+1)+40*x,230-40*(y+1)+40*x,65+40*(y+1)+40*x,outline='blue',width='2')
             check_bnt.append([x+1,y+2])
 
-
 for x in range(5):
     for y in range(5):
-        f = drow_oval(x,y)
-        button1 = tkinter.Button(window,command = drow_oval(x,y),text = "%d,%d"%(x+1,y+1),width='3')
+        button1 = tkinter.Button(window,command = drow_oval(x,y,True),text = "%d,%d"%(x+1,y+1),width='3')
         dic[(x,y)] = button1
         button1_window = canvas.create_window(200-40*y+40*x,40+40*y+40*x,window=button1)
 
 log_button = tkinter.Button(window,command = check_log,width='10',height='2',text='log_button')
 log_button.pack()
 
-re_button = tkinter.Button(window,command = re_button,width='10',height='2',text='re_button')
+re_button = tkinter.Button(window,command = re_bnt,width='10',height='2',text='re_button')
 re_button.pack()
+
+Oneback_button = tkinter.Button(window,command = Oneback_bnt,width='15',height='2',text='Oneback_button')
+Oneback_button.pack()
+
 
 window.mainloop()
